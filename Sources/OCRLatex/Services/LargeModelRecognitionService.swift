@@ -127,7 +127,7 @@ final class LargeModelRecognitionService {
 
 private extension NSImage {
     func pngDataURL() -> String? {
-        guard let cgImage = cgImageForEncoding() else {
+        guard let cgImage = cgImage() else {
             return nil
         }
 
@@ -137,18 +137,5 @@ private extension NSImage {
         }
 
         return "data:image/png;base64,\(data.base64EncodedString())"
-    }
-
-    func cgImageForEncoding() -> CGImage? {
-        var proposedRect = CGRect(origin: .zero, size: size)
-        if let image = cgImage(forProposedRect: &proposedRect, context: nil, hints: nil) {
-            return image
-        }
-
-        guard let tiffRepresentation,
-              let bitmap = NSBitmapImageRep(data: tiffRepresentation) else {
-            return nil
-        }
-        return bitmap.cgImage
     }
 }

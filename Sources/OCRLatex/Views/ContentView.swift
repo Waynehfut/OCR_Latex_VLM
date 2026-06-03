@@ -148,7 +148,7 @@ private struct CandidatePanelView: View {
             GroupBox("候选结果") {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack {
-                        Label(candidate.engine.rawValue, systemImage: "sparkles")
+                        Label(candidate.engine.label, systemImage: "sparkles")
                             .foregroundStyle(.secondary)
                         Text(candidate.source.rawValue)
                             .foregroundStyle(.secondary)
@@ -202,7 +202,12 @@ private struct AboutPanelView: View {
                         .frame(width: 24)
 
                     VStack(alignment: .leading, spacing: 6) {
-                        AboutRow(title: "作者", value: "Waynehfut")
+                        AboutRow(title: "作者", value: "drhaowang.com")
+                        AboutLinkRow(
+                            title: "网站",
+                            label: "drhaowang.com",
+                            url: URL(string: "https://drhaowang.com")!
+                        )
                         AboutLinkRow(
                             title: "仓库地址",
                             label: "github.com/Waynehfut/OCR_Latex_VLM",
@@ -314,7 +319,7 @@ private struct HistoryRowView: View {
             HStack {
                 Label(item.source.rawValue, systemImage: "text.viewfinder")
                     .foregroundStyle(.secondary)
-                Text(item.engine.rawValue)
+                Text(item.engine.label)
                     .foregroundStyle(.secondary)
                 Text(DateFormatting.historyFormatter.string(from: item.date))
                     .foregroundStyle(.secondary)

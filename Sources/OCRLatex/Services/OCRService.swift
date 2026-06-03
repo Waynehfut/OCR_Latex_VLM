@@ -18,7 +18,7 @@ enum OCRError: LocalizedError {
 
 final class OCRService {
     func recognize(image: NSImage, usesLanguageCorrection: Bool) async throws -> OCRDocument {
-        guard let cgImage = image.cgImageForOCR() else {
+        guard let cgImage = image.cgImage() else {
             throw OCRError.imageConversionFailed
         }
 
@@ -66,20 +66,5 @@ final class OCRService {
             }
             return left.boundingBox.minX < right.boundingBox.minX
         }
-    }
-}
-
-private extension NSImage {
-    func cgImageForOCR() -> CGImage? {
-        var proposedRect = CGRect(origin: .zero, size: size)
-        if let image = cgImage(forProposedRect: &proposedRect, context: nil, hints: nil) {
-            return image
-        }
-
-        guard let tiffRepresentation,
-              let bitmap = NSBitmapImageRep(data: tiffRepresentation) else {
-            return nil
-        }
-        return bitmap.cgImage
     }
 }

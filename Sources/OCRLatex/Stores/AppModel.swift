@@ -34,20 +34,17 @@ final class AppModel: ObservableObject {
     }
 
     func captureInteractive() {
-        guard !isWorking else {
-            return
-        }
-        Task {
-            await runWorkflow(source: .screenSelection)
-        }
+        startWorkflow(source: .screenSelection)
     }
 
     func recognizeClipboardImage() {
-        guard !isWorking else {
-            return
-        }
+        startWorkflow(source: .clipboardImage)
+    }
+
+    private func startWorkflow(source: OCRSource) {
+        guard !isWorking else { return }
         Task {
-            await runWorkflow(source: .clipboardImage)
+            await runWorkflow(source: source)
         }
     }
 
@@ -276,12 +273,13 @@ final class AppModel: ObservableObject {
         }
     }
 
-    private func truncatedPreview(_ text: String) -> String {
+    func truncatedPreview(_ text: String, maxLength: Int = 38) -> String {
         let firstLine = text.components(separatedBy: .newlines).first ?? text
-        if firstLine.count > 38 {
-            return String(firstLine.prefix(38)) + "..."
+        let cleaned = firstLine.trimmingCharacters(in: .whitespaces)
+        if cleaned.count > maxLength {
+            return String(cleaned.prefix(maxLength)) + "..."
         }
-        return firstLine
+        return cleaned
     }
 
     private func registerHotKey() {

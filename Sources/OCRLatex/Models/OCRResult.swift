@@ -32,7 +32,7 @@ struct OCRHistoryItem: Identifiable {
     var latex: String
     var copiedToPasteboard: Bool
     var confidence: Float
-    var engine: RecognitionEngine
+    var engine: RecognitionBackend
 }
 
 enum OCRSource: String {

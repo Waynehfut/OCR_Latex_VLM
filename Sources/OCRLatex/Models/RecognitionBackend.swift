@@ -18,11 +18,6 @@ enum RecognitionBackend: String, CaseIterable, Identifiable {
     }
 }
 
-enum RecognitionEngine: String {
-    case localVision = "本机 OCR"
-    case largeModel = "大模型"
-}
-
 enum ImageDetailLevel: String, CaseIterable, Identifiable {
     case auto
     case low

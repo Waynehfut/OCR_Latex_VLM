@@ -123,9 +123,10 @@ final class PreferencesStore: ObservableObject {
         }
 
         self.largeModelEndpoint = defaults.string(forKey: Keys.largeModelEndpoint)
-            ?? "https://api.openai.com/v1/chat/completions"
+            ?? LargeModelPlatform.openAI.defaultEndpoint
         self.largeModelAPIKey = keychain.readAPIKey()
-        self.largeModelName = defaults.string(forKey: Keys.largeModelName) ?? "gpt-4o"
+        self.largeModelName = defaults.string(forKey: Keys.largeModelName)
+            ?? LargeModelPlatform.openAI.defaultModel
 
         let platformValue = defaults.string(forKey: Keys.largeModelPlatform)
         self.largeModelPlatform = LargeModelPlatform(rawValue: platformValue ?? "") ?? .openAI

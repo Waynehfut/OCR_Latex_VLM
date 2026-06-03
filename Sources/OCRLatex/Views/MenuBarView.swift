@@ -61,7 +61,7 @@ struct MenuBarView: View {
                     model.copyHistoryItemToPasteboard(item)
                 } label: {
                     Label(
-                        truncatedMenuLabel(item.latex),
+                        model.truncatedPreview(item.latex, maxLength: 50),
                         systemImage: item.engine == .largeModel
                             ? "sparkles"
                             : "text.viewfinder"
@@ -92,14 +92,5 @@ struct MenuBarView: View {
         } label: {
             Label("退出", systemImage: "power")
         }
-    }
-
-    private func truncatedMenuLabel(_ text: String) -> String {
-        let firstLine = text.components(separatedBy: .newlines).first ?? text
-        let cleaned = firstLine.trimmingCharacters(in: .whitespaces)
-        if cleaned.count > 50 {
-            return String(cleaned.prefix(50)) + "..."
-        }
-        return cleaned
     }
 }
