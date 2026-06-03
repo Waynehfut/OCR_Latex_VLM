@@ -6,7 +6,6 @@
 
 OCR LaTeX 是一个 macOS 菜单栏工具，用于把屏幕选区或剪贴板图片识别为 LaTeX。
 
-由 **[drhaowang.com](https://drhaowang.com)** 创建
 
 ## 能力
 
