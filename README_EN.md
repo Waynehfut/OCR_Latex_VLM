@@ -6,7 +6,6 @@
 
 OCR LaTeX is a macOS menu bar app that converts screen captures or clipboard images into LaTeX.
 
-Created by **[drhaowang.com](https://drhaowang.com)**
 
 ## Features
 
