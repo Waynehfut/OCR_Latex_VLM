@@ -1,27 +1,37 @@
 # OCR LaTeX
 
-OCR LaTeX is a free local macOS menu bar utility for turning selected screen regions or clipboard images into LaTeX-like text.
+OCR LaTeX 是一个 macOS 菜单栏工具，用于把屏幕选区或剪贴板图片识别为 LaTeX。
 
-## Features
+## 能力
 
-- Runs in the menu bar as a background utility.
-- Uses macOS `screencapture` for region selection.
-- Uses Apple's local Vision OCR framework.
-- Can call a configured vision language model through an OpenAI Responses-compatible endpoint.
-- Registers a configurable global hotkey.
-- Lets you review and edit a candidate LaTeX result before accepting it.
-- Copies the accepted LaTeX result to the pasteboard.
+- 后台驻留在菜单栏，可通过全局快捷键触发。
+- 使用 macOS 自带截图能力选择屏幕区域。
+- 默认使用 Apple Vision 做本机 OCR，无需网络。
+- 可切换到兼容 Chat Completions 的视觉大模型接口。
+- 支持 OpenAI、DeepSeek、火山引擎、阿里百炼和自定义接口配置。
+- 识别结果进入候选区，可编辑、复制、接受或丢弃。
+- 接受后的结果会进入历史记录，并可自动复制到剪贴板。
 
-## Run
+## 运行
 
 ```bash
 ./script/build_and_run.sh
 ```
 
-The default global hotkey is `⌃⌥⌘L`.
+默认全局快捷键是 `⌃⌥⌘L`。应用首次截屏时需要 macOS 屏幕录制权限；如果拒绝授权，可在控制面板或菜单栏打开系统隐私设置。
 
-## Notes
+## 大模型配置
 
-Vision is general-purpose text OCR, not a dedicated formula model. The app adds a local normalization pass for common math symbols, Greek letters, superscripts, subscripts, simple fractions, square roots, and function names.
+在偏好设置中将识别后端切换为“大模型”，然后填写：
 
-Large model mode sends the selected image to the configured endpoint. API keys are stored in Keychain.
+- 平台或自定义接口地址
+- API Key
+- 模型名称
+- 图像精度
+- 识别提示词
+
+当前请求格式为 Chat Completions 兼容接口：`messages` 中包含一段文本提示和一张 base64 `image_url` 图片。API Key 存储在 macOS Keychain 中。
+
+## 说明
+
+本机 OCR 适合简单公式和普通文本，复杂数学排版建议使用支持视觉输入的大模型。大模型模式会把所选图片发送到你配置的接口，请按自己的隐私和费用要求选择服务商。

@@ -98,6 +98,12 @@ final class AppModel: ObservableObject {
         NotificationCenter.default.post(name: AppModel.openDashboardNotification, object: nil)
     }
 
+    func openPreferencesWindow() {
+        NSApp.setActivationPolicy(.accessory)
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+    }
+
     static let openDashboardNotification = Notification.Name("OCRLatexOpenDashboard")
 
     func refreshScreenCapturePermission() {

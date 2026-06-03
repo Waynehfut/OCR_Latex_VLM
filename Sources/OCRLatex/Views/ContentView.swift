@@ -16,7 +16,7 @@ struct ContentView: View {
                     PermissionPanelView(model: model)
                     CandidatePanelView(model: model)
                     StatusPanelView(model: model)
-                    PreferencesPanelView(model: model)
+                    ConfigurationSummaryView(model: model)
                     HistoryPanelView(model: model)
                 }
                 .padding(24)
@@ -186,6 +186,51 @@ private struct CandidatePanelView: View {
                 }
                 .padding(.vertical, 4)
             }
+        }
+    }
+}
+
+private struct ConfigurationSummaryView: View {
+    @ObservedObject var model: AppModel
+    @ObservedObject private var preferences: PreferencesStore
+
+    init(model: AppModel) {
+        self.model = model
+        _preferences = ObservedObject(wrappedValue: model.preferences)
+    }
+
+    var body: some View {
+        GroupBox("当前配置") {
+            HStack(spacing: 18) {
+                Label(preferences.recognitionBackend.label, systemImage: backendIconName)
+                Label(preferences.outputWrapping.label, systemImage: "curlybraces")
+                Label(preferences.hotKey.displayName, systemImage: "keyboard")
+
+                Spacer()
+
+                if #available(macOS 14.0, *) {
+                    SettingsLink {
+                        Label("偏好设置", systemImage: "gearshape")
+                    }
+                } else {
+                    Button {
+                        model.openPreferencesWindow()
+                    } label: {
+                        Label("偏好设置", systemImage: "gearshape")
+                    }
+                }
+            }
+            .foregroundStyle(.secondary)
+            .padding(.vertical, 4)
+        }
+    }
+
+    private var backendIconName: String {
+        switch preferences.recognitionBackend {
+        case .localVision:
+            "text.viewfinder"
+        case .largeModel:
+            "sparkles"
         }
     }
 }

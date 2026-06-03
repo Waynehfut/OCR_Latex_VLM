@@ -89,6 +89,12 @@ struct MenuBarView: View {
             SettingsLink {
                 Label("偏好设置", systemImage: "gearshape")
             }
+        } else {
+            Button {
+                model.openPreferencesWindow()
+            } label: {
+                Label("偏好设置", systemImage: "gearshape")
+            }
         }
 
         Divider()
