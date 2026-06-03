@@ -21,11 +21,6 @@ struct OCRLatexApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {}
         }
-
-        Settings {
-            SettingsView(model: model)
-                .frame(width: 500)
-        }
     }
 }
 

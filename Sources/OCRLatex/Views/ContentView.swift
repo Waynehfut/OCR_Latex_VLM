@@ -16,7 +16,8 @@ struct ContentView: View {
                     PermissionPanelView(model: model)
                     CandidatePanelView(model: model)
                     StatusPanelView(model: model)
-                    ConfigurationSummaryView(model: model)
+                    PreferencesPanelView(model: model)
+                    AboutPanelView()
                     HistoryPanelView(model: model)
                 }
                 .padding(24)
@@ -190,47 +191,57 @@ private struct CandidatePanelView: View {
     }
 }
 
-private struct ConfigurationSummaryView: View {
-    @ObservedObject var model: AppModel
-    @ObservedObject private var preferences: PreferencesStore
-
-    init(model: AppModel) {
-        self.model = model
-        _preferences = ObservedObject(wrappedValue: model.preferences)
-    }
-
+private struct AboutPanelView: View {
     var body: some View {
-        GroupBox("当前配置") {
-            HStack(spacing: 18) {
-                Label(preferences.recognitionBackend.label, systemImage: backendIconName)
-                Label(preferences.outputWrapping.label, systemImage: "curlybraces")
-                Label(preferences.hotKey.displayName, systemImage: "keyboard")
+        GroupBox("关于") {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .top, spacing: 12) {
+                    Image(systemName: "person.crop.circle")
+                        .font(.title3)
+                        .foregroundStyle(Color.accentColor)
+                        .frame(width: 24)
 
-                Spacer()
-
-                if #available(macOS 14.0, *) {
-                    SettingsLink {
-                        Label("偏好设置", systemImage: "gearshape")
-                    }
-                } else {
-                    Button {
-                        model.openPreferencesWindow()
-                    } label: {
-                        Label("偏好设置", systemImage: "gearshape")
+                    VStack(alignment: .leading, spacing: 6) {
+                        AboutRow(title: "作者", value: "Waynehfut")
+                        AboutLinkRow(
+                            title: "仓库地址",
+                            label: "github.com/Waynehfut/OCR_Latex_VLM",
+                            url: URL(string: "https://github.com/Waynehfut/OCR_Latex_VLM")!
+                        )
                     }
                 }
             }
-            .foregroundStyle(.secondary)
             .padding(.vertical, 4)
         }
     }
+}
 
-    private var backendIconName: String {
-        switch preferences.recognitionBackend {
-        case .localVision:
-            "text.viewfinder"
-        case .largeModel:
-            "sparkles"
+private struct AboutRow: View {
+    var title: String
+    var value: String
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Text(title)
+                .foregroundStyle(.secondary)
+                .frame(width: 96, alignment: .leading)
+            Text(value)
+                .textSelection(.enabled)
+        }
+    }
+}
+
+private struct AboutLinkRow: View {
+    var title: String
+    var label: String
+    var url: URL
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Text(title)
+                .foregroundStyle(.secondary)
+                .frame(width: 96, alignment: .leading)
+            Link(label, destination: url)
         }
     }
 }

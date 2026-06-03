@@ -46,7 +46,6 @@ enum ImageDetailLevel: String, CaseIterable, Identifiable {
 
 enum LargeModelPlatform: String, CaseIterable, Identifiable {
     case openAI
-    case deepSeek
     case volces
     case bailian
     case custom
@@ -59,8 +58,6 @@ enum LargeModelPlatform: String, CaseIterable, Identifiable {
         switch self {
         case .openAI:
             "OpenAI"
-        case .deepSeek:
-            "DeepSeek"
         case .volces:
             "火山引擎"
         case .bailian:
@@ -74,8 +71,6 @@ enum LargeModelPlatform: String, CaseIterable, Identifiable {
         switch self {
         case .openAI:
             "https://api.openai.com/v1/chat/completions"
-        case .deepSeek:
-            "https://api.deepseek.com/v1/chat/completions"
         case .volces:
             "https://ark.cn-beijing.volces.com/api/v3/chat/completions"
         case .bailian:
@@ -89,8 +84,6 @@ enum LargeModelPlatform: String, CaseIterable, Identifiable {
         switch self {
         case .openAI:
             "gpt-4o"
-        case .deepSeek:
-            "deepseek-chat"
         case .volces:
             "doubao-vision-pro-32k"
         case .bailian:

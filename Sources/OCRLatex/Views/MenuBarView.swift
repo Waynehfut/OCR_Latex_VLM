@@ -85,18 +85,6 @@ struct MenuBarView: View {
             Label("打开控制面板", systemImage: "macwindow")
         }
 
-        if #available(macOS 14.0, *) {
-            SettingsLink {
-                Label("偏好设置", systemImage: "gearshape")
-            }
-        } else {
-            Button {
-                model.openPreferencesWindow()
-            } label: {
-                Label("偏好设置", systemImage: "gearshape")
-            }
-        }
-
         Divider()
 
         Button {

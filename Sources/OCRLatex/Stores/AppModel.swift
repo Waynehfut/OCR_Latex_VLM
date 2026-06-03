@@ -98,12 +98,6 @@ final class AppModel: ObservableObject {
         NotificationCenter.default.post(name: AppModel.openDashboardNotification, object: nil)
     }
 
-    func openPreferencesWindow() {
-        NSApp.setActivationPolicy(.accessory)
-        NSApp.activate(ignoringOtherApps: true)
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
-    }
-
     static let openDashboardNotification = Notification.Name("OCRLatexOpenDashboard")
 
     func refreshScreenCapturePermission() {
@@ -244,8 +238,9 @@ final class AppModel: ObservableObject {
     private func showToast(title: String, subtitle: String?) {
         toastPanel?.close()
 
+        let toastSize = NSSize(width: 300, height: 64)
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: 440, height: 88),
+            contentRect: NSRect(origin: .zero, size: toastSize),
             styleMask: [.borderless, .nonactivatingPanel],
             backing: .buffered,
             defer: false
@@ -263,11 +258,12 @@ final class AppModel: ObservableObject {
 
         if let screen = NSScreen.main {
             let screenRect = screen.visibleFrame
+            let margin: CGFloat = 12
             let panelRect = NSRect(
-                x: screenRect.midX - 220,
-                y: screenRect.maxY - 120,
-                width: 440,
-                height: 88
+                x: screenRect.maxX - toastSize.width - margin,
+                y: screenRect.maxY - toastSize.height - margin,
+                width: toastSize.width,
+                height: toastSize.height
             )
             panel.setFrame(panelRect, display: false)
         }
@@ -282,8 +278,8 @@ final class AppModel: ObservableObject {
 
     private func truncatedPreview(_ text: String) -> String {
         let firstLine = text.components(separatedBy: .newlines).first ?? text
-        if firstLine.count > 60 {
-            return String(firstLine.prefix(60)) + "..."
+        if firstLine.count > 38 {
+            return String(firstLine.prefix(38)) + "..."
         }
         return firstLine
     }
@@ -303,37 +299,38 @@ private struct ToastView: View {
     let subtitle: String?
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: 10) {
             Image(systemName: "checkmark.circle.fill")
-                .font(.title)
+                .font(.title3)
                 .foregroundStyle(.green)
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(.body, weight: .semibold))
-                    .foregroundStyle(.primary)
+                    .font(.system(.callout, weight: .semibold))
+                    .foregroundStyle(.black)
+                    .lineLimit(1)
 
                 if let subtitle {
                     Text(subtitle)
-                        .font(.system(.callout, design: .monospaced))
-                        .foregroundStyle(.secondary)
+                        .font(.system(.caption, design: .monospaced))
+                        .foregroundStyle(.black.opacity(0.65))
                         .lineLimit(1)
                 }
             }
 
             Spacer()
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 16)
-        .frame(width: 440)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .frame(width: 300, height: 64)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.regularMaterial)
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.white)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.primary.opacity(0.1), lineWidth: 0.5)
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(Color.black.opacity(0.08), lineWidth: 0.5)
         )
-        .shadow(color: .black.opacity(0.15), radius: 16, y: 6)
+        .shadow(color: .black.opacity(0.18), radius: 12, y: 4)
     }
 }
